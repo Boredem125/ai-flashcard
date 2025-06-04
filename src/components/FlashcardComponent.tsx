@@ -22,8 +22,8 @@ const FlashcardComponent: React.FC<FlashcardComponentProps> = ({
     <div className={cn("perspective w-full max-w-xl h-80 mx-auto", className)}>
       <div
         className={cn(
-          "relative w-full h-full transform-style-3d transition-transform duration-700 ease-in-out",
-          "bg-card text-card-foreground border border-border rounded-lg shadow-xl", // Card-like appearance
+          "relative w-full h-full transform-style-3d transition-transform duration-500 ease-out", // Changed duration and easing
+          "bg-card text-card-foreground border border-border rounded-lg shadow-xl",
           isFlipped ? 'rotate-y-180' : ''
         )}
         onClick={onFlip}
@@ -45,7 +45,7 @@ const FlashcardComponent: React.FC<FlashcardComponentProps> = ({
       </div>
       <style jsx>{`
         .perspective {
-          perspective: 1000px;
+          perspective: 1500px; /* Increased perspective */
         }
         .transform-style-3d {
           transform-style: preserve-3d;
