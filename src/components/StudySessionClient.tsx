@@ -1,10 +1,11 @@
+
 'use client';
 
 import type { Flashcard, FlashcardSet } from '@/lib/types';
 import { useState, useEffect, useCallback } from 'react';
 import FlashcardComponent from './FlashcardComponent';
 import { Button } from '@/components/ui/button';
-import { CheckCircle, XCircle, RotateCcw, Save, ChevronsLeft, ChevronsRight, Brain } from 'lucide-react';
+import { CheckCircle, XCircle, RotateCcw, Save, ChevronsLeft, ChevronsRight, Brain, LogOut } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
 import { useToast } from '@/hooks/use-toast';
 import { getAdaptedFlashcardsAction } from '@/lib/actions';
@@ -171,39 +172,46 @@ const StudySessionClient: React.FC<StudySessionClientProps> = ({
         <Button onClick={() => navigateCard('prev')} disabled={currentCardIndex === 0} variant="outline" size="icon" aria-label="Previous card">
             <ChevronsLeft />
         </Button>
-        <Dialog open={showSaveDialog} onOpenChange={setShowSaveDialog}>
-          <DialogTrigger asChild>
-            <Button variant="outline" className="min-w-[120px]" onClick={() => { if(!setId) setShowSaveDialog(true); else handleSaveSet();}}>
-              <Save className="mr-2 h-4 w-4" /> {setId ? 'Update Set' : 'Save Set'}
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="sm:max-w-[425px]">
-            <DialogHeader>
-              <DialogTitle>Save Flashcard Set</DialogTitle>
-              <DialogDescription>
-                Enter a name for your new flashcard set.
-              </DialogDescription>
-            </DialogHeader>
-            <div className="grid gap-4 py-4">
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="setName" className="text-right">
-                  Set Name
-                </Label>
-                <Input
-                  id="setName"
-                  value={setName}
-                  onChange={(e) => setSetName(e.target.value)}
-                  className="col-span-3"
-                  placeholder="e.g., Chapter 1 Biology"
-                />
+        
+        <div className="flex items-center space-x-2">
+          <Dialog open={showSaveDialog} onOpenChange={setShowSaveDialog}>
+            <DialogTrigger asChild>
+              <Button variant="outline" className="min-w-[100px]" onClick={() => { if(!setId) setShowSaveDialog(true); else handleSaveSet();}}>
+                <Save className="mr-2 h-4 w-4" /> {setId ? 'Update' : 'Save'}
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px]">
+              <DialogHeader>
+                <DialogTitle>Save Flashcard Set</DialogTitle>
+                <DialogDescription>
+                  Enter a name for your new flashcard set.
+                </DialogDescription>
+              </DialogHeader>
+              <div className="grid gap-4 py-4">
+                <div className="grid grid-cols-4 items-center gap-4">
+                  <Label htmlFor="setName" className="text-right">
+                    Set Name
+                  </Label>
+                  <Input
+                    id="setName"
+                    value={setName}
+                    onChange={(e) => setSetName(e.target.value)}
+                    className="col-span-3"
+                    placeholder="e.g., Chapter 1 Biology"
+                  />
+                </div>
               </div>
-            </div>
-            <DialogFooter>
-              <Button variant="outline" onClick={() => setShowSaveDialog(false)}>Cancel</Button>
-              <Button type="submit" onClick={handleSaveSet}>Save Set</Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
+              <DialogFooter>
+                <Button variant="outline" onClick={() => setShowSaveDialog(false)}>Cancel</Button>
+                <Button type="submit" onClick={handleSaveSet}>Save Set</Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+          <Button variant="outline" onClick={() => router.push('/')} className="min-w-[100px]">
+            <LogOut className="mr-2 h-4 w-4" /> Exit
+          </Button>
+        </div>
+
         <Button onClick={() => navigateCard('next')} disabled={currentCardIndex === flashcards.length - 1} variant="outline" size="icon" aria-label="Next card">
             <ChevronsRight />
         </Button>
