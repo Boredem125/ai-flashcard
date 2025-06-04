@@ -6,7 +6,7 @@
   :root {
     --background: 233 67% 97%; /* #F0F2FA Very light indigo */
     --foreground: 236 50% 20%; /* Darker for text on light background */
-    --card: 0 0% 100%; /* White cards */
+    --card: 233 50% 90%; /* Lighter indigo, matches --secondary */
     --card-foreground: 236 50% 20%;
     --popover: 0 0% 100%; /* White popovers */
     --popover-foreground: 236 50% 20%;
@@ -42,7 +42,7 @@
   .dark {
     --background: 236 50% 10%; /* Dark indigo/blue */
     --foreground: 233 67% 97%; /* Light indigo text */
-    --card: 236 50% 15%; 
+    --card: 236 50% 25%; /* Slightly lighter dark card, matches --secondary */
     --card-foreground: 233 67% 97%;
     --popover: 236 50% 15%;
     --popover-foreground: 233 67% 97%;
