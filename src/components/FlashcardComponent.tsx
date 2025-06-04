@@ -1,8 +1,6 @@
+
 'use client';
 
-import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { RotateCcw } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface FlashcardComponentProps {
@@ -22,9 +20,10 @@ const FlashcardComponent: React.FC<FlashcardComponentProps> = ({
 }) => {
   return (
     <div className={cn("perspective w-full max-w-xl h-80 mx-auto", className)}>
-      <Card
+      <div
         className={cn(
-          "relative w-full h-full transform-style-3d transition-transform duration-700 ease-in-out flex flex-col items-center justify-center text-center shadow-xl",
+          "relative w-full h-full transform-style-3d transition-transform duration-700 ease-in-out",
+          "bg-card text-card-foreground border border-border rounded-lg shadow-xl", // Card-like appearance
           isFlipped ? 'rotate-y-180' : ''
         )}
         onClick={onFlip}
@@ -36,14 +35,14 @@ const FlashcardComponent: React.FC<FlashcardComponentProps> = ({
       >
         {/* Front of the card */}
         <div className="absolute inset-0 p-6 flex flex-col items-center justify-center backface-hidden">
-          <p className="text-2xl font-semibold">{frontContent}</p>
+          <p className="text-2xl font-semibold text-center">{frontContent}</p>
         </div>
 
         {/* Back of the card */}
         <div className="absolute inset-0 p-6 flex flex-col items-center justify-center backface-hidden rotate-y-180">
-          <p className="text-xl">{backContent}</p>
+          <p className="text-xl text-center">{backContent}</p>
         </div>
-      </Card>
+      </div>
       <style jsx>{`
         .perspective {
           perspective: 1000px;
