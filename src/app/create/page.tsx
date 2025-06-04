@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -11,6 +12,12 @@ import { useToast } from '@/hooks/use-toast';
 import type { Flashcard } from '@/lib/types';
 import { generateFlashcardsFromTopicAction, generateFlashcardsFromFileAction } from '@/lib/actions';
 import StudySessionClient from '@/components/StudySessionClient';
+
+const ACCEPTED_FILE_TYPES = [
+  "application/pdf",
+  "application/vnd.openxmlformats-officedocument.presentationml.presentation", // .pptx
+  "application/vnd.ms-powerpoint" // .ppt
+];
 
 export default function CreateFlashcardsPage() {
   const [mode, setMode] = useState<'topic' | 'file'>('topic');
@@ -26,15 +33,17 @@ export default function CreateFlashcardsPage() {
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       const selectedFile = event.target.files[0];
-      if (selectedFile.type === "application/pdf" || selectedFile.type === "application/vnd.openxmlformats-officedocument.presentationml.presentation") {
+      if (ACCEPTED_FILE_TYPES.includes(selectedFile.type)) {
         setFile(selectedFile);
       } else {
         toast({
           title: "Invalid File Type",
-          description: "Please upload a PDF or PPT file.",
+          description: "Please upload a PDF, PPT, or PPTX file.",
           variant: "destructive",
         });
         setFile(null);
+        // Clear the file input
+        event.target.value = '';
       }
     }
   };
@@ -120,7 +129,7 @@ export default function CreateFlashcardsPage() {
           <Tabs value={mode} onValueChange={(value) => setMode(value as 'topic' | 'file')} className="w-full">
             <TabsList className="grid w-full grid-cols-2 mb-6">
               <TabsTrigger value="topic"><TextIcon className="mr-2 h-4 w-4" />From Topic</TabsTrigger>
-              <TabsTrigger value="file"><FileUp className="mr-2 h-4 w-4" />From File (PDF/PPT)</TabsTrigger>
+              <TabsTrigger value="file"><FileUp className="mr-2 h-4 w-4" />From File (PDF/PPT/PPTX)</TabsTrigger>
             </TabsList>
             <form onSubmit={handleSubmit} className="space-y-6">
               <TabsContent value="topic">
@@ -152,11 +161,11 @@ export default function CreateFlashcardsPage() {
               </TabsContent>
               <TabsContent value="file">
                 <div className="space-y-2">
-                  <Label htmlFor="fileUpload" className="text-base">Upload Document (PDF or PPT)</Label>
+                  <Label htmlFor="fileUpload" className="text-base">Upload Document (PDF, PPT, or PPTX)</Label>
                   <Input
                     id="fileUpload"
                     type="file"
-                    accept=".pdf,.ppt,.pptx"
+                    accept={ACCEPTED_FILE_TYPES.join(',')}
                     onChange={handleFileChange}
                     className="mt-1 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-primary-foreground hover:file:bg-primary/90"
                   />

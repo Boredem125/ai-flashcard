@@ -1,4 +1,3 @@
-// 'use server';
 
 /**
  * @fileOverview Generates flashcards from a user-uploaded document (PDF or PPT).
@@ -47,6 +46,7 @@ const prompt = ai.definePrompt({
       Generate a set of flashcards that cover the key concepts and information from the document. Each flashcard should have a front and a back.
 
       Format your response as a JSON array of flashcard objects, each with a 'front' and 'back' field.
+      Ensure your entire response is *only* this JSON array. Do not include any other text or explanations outside of the JSON array itself.
 
       Example:
       [
@@ -69,11 +69,17 @@ const generateFlashcardsFromDocumentFlow = ai.defineFlow(
     outputSchema: GenerateFlashcardsFromDocumentOutputSchema,
   },
   async input => {
-    const {output} = await prompt(input);
-    if (!output) {
-      throw new Error('AI failed to generate flashcards or the output was invalid.');
+    const response = await prompt(input); // Get the full response object
+
+    if (response.error) {
+      console.error('Genkit prompt error in generateFlashcardsFromDocumentFlow:', response.error);
+      throw new Error(`AI prompt failed: ${response.error}`);
     }
-    return output;
+
+    if (!response.output) {
+      console.error('Genkit prompt in generateFlashcardsFromDocumentFlow returned no parsable output. The model might have returned an empty, malformed, or unparsable response.');
+      throw new Error('AI failed to generate flashcards. The model may have returned an empty, malformed, or unparsable response.');
+    }
+    return response.output;
   }
 );
-
