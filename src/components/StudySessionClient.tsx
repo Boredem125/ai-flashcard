@@ -135,6 +135,7 @@ const StudySessionClient: React.FC<StudySessionClientProps> = ({
       </div>
 
       <FlashcardComponent
+        key={`${currentCard.front}-${currentCardIndex}`}
         frontContent={currentCard.front}
         backContent={currentCard.back}
         isFlipped={isFlipped}
