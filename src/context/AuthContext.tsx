@@ -33,12 +33,20 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   // Client-side log for API key
   if (typeof window !== 'undefined') {
+    const apiKey = process.env.NEXT_PUBLIC_FIREBASE_API_KEY;
     console.log(
       "AuthContext (Client-side): NEXT_PUBLIC_FIREBASE_API_KEY is ",
-      process.env.NEXT_PUBLIC_FIREBASE_API_KEY ? `"${process.env.NEXT_PUBLIC_FIREBASE_API_KEY.substring(0,5)}..." (present)` : "MISSING or UNDEFINED"
+      apiKey ? `"${apiKey.substring(0,5)}..." (present)` : "MISSING or UNDEFINED"
     );
-    if (!process.env.NEXT_PUBLIC_FIREBASE_API_KEY) {
-      console.error("CRITICAL AuthContext (Client-side) ERROR: NEXT_PUBLIC_FIREBASE_API_KEY is MISSING or UNDEFINED in the browser. Check .env file, NEXT_PUBLIC_ prefix, and restart Next.js dev server.");
+    if (!apiKey) {
+      console.error(
+        "CRITICAL AuthContext (Client-side) ERROR: NEXT_PUBLIC_FIREBASE_API_KEY is MISSING or UNDEFINED in the browser. " +
+        "This means Firebase cannot be initialized correctly. " +
+        "Please ensure:\n" +
+        "1. Your API key is in your .env (or .env.local) file (e.g., NEXT_PUBLIC_FIREBASE_API_KEY=yourActualKey).\n" +
+        "2. You have restarted your Next.js development server after adding/changing it.\n" +
+        "3. The variable name starts with NEXT_PUBLIC_."
+      );
     }
   }
 
