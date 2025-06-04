@@ -31,6 +31,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
   const { toast } = useToast();
 
+  // Client-side log for API key
+  if (typeof window !== 'undefined') {
+    console.log(
+      "AuthContext (Client-side): NEXT_PUBLIC_FIREBASE_API_KEY is ",
+      process.env.NEXT_PUBLIC_FIREBASE_API_KEY ? `"${process.env.NEXT_PUBLIC_FIREBASE_API_KEY.substring(0,5)}..." (present)` : "MISSING or UNDEFINED"
+    );
+    if (!process.env.NEXT_PUBLIC_FIREBASE_API_KEY) {
+      console.error("CRITICAL AuthContext (Client-side) ERROR: NEXT_PUBLIC_FIREBASE_API_KEY is MISSING or UNDEFINED in the browser. Check .env file, NEXT_PUBLIC_ prefix, and restart Next.js dev server.");
+    }
+  }
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
