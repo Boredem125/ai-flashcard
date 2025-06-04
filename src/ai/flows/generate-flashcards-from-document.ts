@@ -22,14 +22,12 @@ const GenerateFlashcardsFromDocumentInputSchema = z.object({
 });
 export type GenerateFlashcardsFromDocumentInput = z.infer<typeof GenerateFlashcardsFromDocumentInputSchema>;
 
-const GenerateFlashcardsFromDocumentOutputSchema = z.object({
-  flashcards: z.array(
-    z.object({
-      front: z.string().describe('The content of the flashcard front.'),
-      back: z.string().describe('The content of the flashcard back.'),
-    })
-  ).describe('The generated flashcards.'),
+const FlashcardObjectSchema = z.object({
+  front: z.string().describe('The content of the flashcard front.'),
+  back: z.string().describe('The content of the flashcard back.'),
 });
+
+const GenerateFlashcardsFromDocumentOutputSchema = z.array(FlashcardObjectSchema).describe('The generated flashcards as an array.');
 export type GenerateFlashcardsFromDocumentOutput = z.infer<typeof GenerateFlashcardsFromDocumentOutputSchema>;
 
 export async function generateFlashcardsFromDocument(input: GenerateFlashcardsFromDocumentInput): Promise<GenerateFlashcardsFromDocumentOutput> {
@@ -72,6 +70,10 @@ const generateFlashcardsFromDocumentFlow = ai.defineFlow(
   },
   async input => {
     const {output} = await prompt(input);
-    return output!;
+    if (!output) {
+      throw new Error('AI failed to generate flashcards or the output was invalid.');
+    }
+    return output;
   }
 );
+

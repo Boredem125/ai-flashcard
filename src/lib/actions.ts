@@ -21,9 +21,8 @@ export async function generateFlashcardsFromTopicAction(topic: string, numberOfF
 export async function generateFlashcardsFromFileAction(documentDataUri: string): Promise<Flashcard[]> {
   try {
     const result = await genkiGenerateFlashcardsFromDocument({ documentDataUri });
-    // Output is already { flashcards: [{ front: string, back: string }] }
-    // but genkiGenerateFlashcardsFromDocument returns an object with a flashcards property
-    return result.flashcards;
+    // The flow now directly returns an array of flashcards
+    return result;
   } catch (error)
    {
     console.error("Error generating flashcards from file:", error);
@@ -43,3 +42,4 @@ export async function getAdaptedFlashcardsAction(
     throw new Error("Failed to adapt flashcard presentation.");
   }
 }
+
