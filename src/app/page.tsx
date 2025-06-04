@@ -1,3 +1,4 @@
+
 'use client';
 
 import Link from 'next/link';
@@ -37,13 +38,15 @@ export default function HomePage() {
 
   return (
     <div className="space-y-12">
-      <section className="text-center py-12 bg-card rounded-xl shadow-lg">
+      <section className="text-center py-12 bg-card rounded-xl shadow-lg
+                          transform-gpu transition-transform duration-300 ease-out
+                          hover:scale-105 hover:[transform:perspective(1000px)_rotateX(1.5deg)_rotateY(-1.5deg)]">
         <h1 className="text-5xl font-headline font-bold text-primary mb-4">Welcome to FlashGenius!</h1>
         <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
           Transform your study materials into interactive flashcards. Upload documents, enter topics, and let AI power your learning.
         </p>
         <Link href="/create">
-          <Button size="lg" className="font-headline">
+          <Button size="lg" className="font-headline transform-gpu hover:scale-110 hover:-translate-y-1 transition-transform duration-200 ease-out">
             <PlusCircle className="mr-2 h-5 w-5" /> Create New Flashcard Set
           </Button>
         </Link>
@@ -69,7 +72,9 @@ export default function HomePage() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {savedSets.sort((a,b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()).map((set) => (
-              <Card key={set.id} className="flex flex-col justify-between shadow-md hover:shadow-xl transition-shadow duration-300">
+              <Card key={set.id} className="flex flex-col justify-between shadow-md hover:shadow-xl
+                                           transform-gpu transition-transform duration-300 ease-out
+                                           hover:scale-105 hover:[transform:perspective(1000px)_rotateX(2deg)_rotateY(-2deg)]">
                 <CardHeader>
                   <CardTitle className="font-headline text-xl">{set.name}</CardTitle>
                   <CardDescription>
