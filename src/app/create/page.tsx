@@ -16,7 +16,8 @@ import StudySessionClient from '@/components/StudySessionClient';
 const ACCEPTED_FILE_TYPES = [
   "application/pdf",
   "application/vnd.openxmlformats-officedocument.presentationml.presentation", // .pptx
-  "application/vnd.ms-powerpoint" // .ppt
+  "application/vnd.ms-powerpoint", // .ppt
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document" // .docx
 ];
 
 export default function CreateFlashcardsPage() {
@@ -38,7 +39,7 @@ export default function CreateFlashcardsPage() {
       } else {
         toast({
           title: "Invalid File Type",
-          description: "Please upload a PDF, PPT, or PPTX file.",
+          description: "Please upload a PDF, PPT, PPTX, or DOCX file.",
           variant: "destructive",
         });
         setFile(null);
@@ -129,7 +130,7 @@ export default function CreateFlashcardsPage() {
           <Tabs value={mode} onValueChange={(value) => setMode(value as 'topic' | 'file')} className="w-full">
             <TabsList className="grid w-full grid-cols-2 mb-6">
               <TabsTrigger value="topic"><TextIcon className="mr-2 h-4 w-4" />From Topic</TabsTrigger>
-              <TabsTrigger value="file"><FileUp className="mr-2 h-4 w-4" />From File (PDF/PPT/PPTX)</TabsTrigger>
+              <TabsTrigger value="file"><FileUp className="mr-2 h-4 w-4" />From File (PDF/PPT/PPTX/DOCX)</TabsTrigger>
             </TabsList>
             <form onSubmit={handleSubmit} className="space-y-6">
               <TabsContent value="topic">
@@ -161,7 +162,7 @@ export default function CreateFlashcardsPage() {
               </TabsContent>
               <TabsContent value="file">
                 <div className="space-y-2">
-                  <Label htmlFor="fileUpload" className="text-base">Upload Document (PDF, PPT, or PPTX)</Label>
+                  <Label htmlFor="fileUpload" className="text-base">Upload Document (PDF, PPT, PPTX, or DOCX)</Label>
                   <Input
                     id="fileUpload"
                     type="file"
