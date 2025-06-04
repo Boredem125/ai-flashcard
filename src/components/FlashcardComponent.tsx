@@ -1,6 +1,6 @@
 'use client';
 
-import { Card, CardContent } from '@/components/ui/card';
+import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { RotateCcw } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -35,17 +35,13 @@ const FlashcardComponent: React.FC<FlashcardComponentProps> = ({
         aria-label={isFlipped ? `Showing back of card. Content: ${backContent}` : `Showing front of card. Content: ${frontContent}`}
       >
         {/* Front of the card */}
-        <div className="absolute w-full h-full backface-hidden p-6 flex flex-col items-center justify-center">
-          <CardContent className="text-2xl font-semibold">
-            <p>{frontContent}</p>
-          </CardContent>
+        <div className="absolute inset-0 p-6 flex flex-col items-center justify-center backface-hidden">
+          <p className="text-2xl font-semibold">{frontContent}</p>
         </div>
 
         {/* Back of the card */}
-        <div className="absolute w-full h-full backface-hidden rotate-y-180 p-6 flex flex-col items-center justify-center">
-          <CardContent className="text-xl">
-            <p>{backContent}</p>
-          </CardContent>
+        <div className="absolute inset-0 p-6 flex flex-col items-center justify-center backface-hidden rotate-y-180">
+          <p className="text-xl">{backContent}</p>
         </div>
       </Card>
       <style jsx>{`
