@@ -8,10 +8,17 @@ export default {
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
+    container: {
+      center: true,
+      padding: "2rem",
+      screens: {
+        "2xl": "1400px",
+      },
+    },
     extend: {
       fontFamily: {
         body: ['Inter', 'sans-serif'],
-        headline: ['Inter', 'sans-serif'],
+        headline: ['Space Grotesk', 'sans-serif'],
         code: ['monospace'],
       },
       colors: {
@@ -88,10 +95,20 @@ export default {
             height: '0',
           },
         },
+        "card-flip-in": {
+          "0%": { transform: "rotateY(-90deg)" },
+          "100%": { transform: "rotateY(0deg)" },
+        },
+        "card-flip-out": {
+          "0%": { transform: "rotateY(0deg)" },
+          "100%": { transform: "rotateY(90deg)" },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
+        "card-flip-in": "card-flip-in 0.3s ease-in-out",
+        "card-flip-out": "card-flip-out 0.3s ease-in-out",
       },
     },
   },
