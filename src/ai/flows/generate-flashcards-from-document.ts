@@ -68,18 +68,41 @@ const generateFlashcardsFromDocumentFlow = ai.defineFlow(
     inputSchema: GenerateFlashcardsFromDocumentInputSchema,
     outputSchema: GenerateFlashcardsFromDocumentOutputSchema,
   },
-  async input => {
-    const response = await prompt(input); // Get the full response object
+  async (input) => {
+    console.log('generateFlashcardsFromDocumentFlow input:', {
+      documentDataUriLength: input.documentDataUri.length,
+      documentDataUriStart: input.documentDataUri.substring(0, 100) + '...', // Log start to see MIME type etc.
+    });
+
+    const response = await prompt(input);
+    // Using JSON.stringify to get a comprehensive view of the response object for debugging
+    console.log('Genkit prompt response in generateFlashcardsFromDocumentFlow:', JSON.stringify(response, null, 2));
 
     if (response.error) {
       console.error('Genkit prompt error in generateFlashcardsFromDocumentFlow:', response.error);
-      throw new Error(`AI prompt failed: ${response.error}`);
+      let errorMessage = `AI prompt failed during document processing.`;
+      if (typeof response.error === 'string') {
+        errorMessage += ` Details: ${response.error}`;
+      } else if (response.error instanceof Error) {
+        errorMessage += ` Details: ${response.error.message}`;
+      } else {
+        errorMessage += ` Details: ${JSON.stringify(response.error)}`;
+      }
+      throw new Error(errorMessage);
     }
 
     if (!response.output) {
-      console.error('Genkit prompt in generateFlashcardsFromDocumentFlow returned no parsable output. The model might have returned an empty, malformed, or unparsable response.');
-      throw new Error('AI failed to generate flashcards. The model may have returned an empty, malformed, or unparsable response.');
+      console.error('Genkit prompt in generateFlashcardsFromDocumentFlow returned no parsable output. The model might have returned an empty, malformed, or unparsable response, or refused to process the content.');
+      // Additional logging of the raw response text if available and output is missing
+      const rawText = response.candidates?.[0]?.message?.text;
+      if (rawText) {
+        console.error('Raw text from model (if available):', rawText);
+      }
+      throw new Error('AI failed to generate flashcards from the document. The model may have returned an empty, malformed, or unparsable response, or it might have refused to process the content.');
     }
+    
+    // Genkit automatically validates the output against the schema.
+    // If response.output is populated, it means it has passed schema validation.
     return response.output;
   }
 );
